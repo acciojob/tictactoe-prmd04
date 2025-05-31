@@ -67,6 +67,7 @@ const checkWinner = () =>{
         for(box of boxes){
           box.disabled=true;
         }
+		  return;
       }
     }
   }
