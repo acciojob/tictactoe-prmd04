@@ -1,89 +1,73 @@
-const player1Input = document.getElementById("player1");
-const player2Input = document.getElementById("player2");
-const submitBtn = document.getElementById("submit");
+const start = document.getElementById("submit");
+const playerInfo = document.querySelector(".player-input");
 const messageDiv = document.querySelector(".message");
 const gameDiv = document.querySelector(".game");
-const boardDiv = document.querySelector(".board");
+let boxes = document.querySelectorAll(".box");
 
-let currentPlayer = "x";
-let player1 = "";
-let player2 = "";
-let board = Array(9).fill("");
-let cells = [];
+let player1 = '';
+let player2 = '';
+
+let turnX = true;
 
 const winPatterns = [
-  [0,1,2], [3,4,5], [6,7,8],
-  [0,3,6], [1,4,7], [2,5,8],
-  [0,4,8], [2,4,6]
+  [0,1,2],
+  [0,3,6],
+  [0,4,8],
+  [1,4,7],
+  [2,5,8],
+  [2,4,6],
+  [3,4,5],
+  [6,7,8],
 ];
 
-submitBtn.addEventListener("click", () => {
-  player1 = player1Input.value.trim();
-  player2 = player2Input.value.trim();
 
+start.addEventListener("click", () => {
+  player1 = document.getElementById("player1").value.trim();
+  player2 = document.getElementById("player2").value.trim();
   if (!player1 || !player2) {
     alert("Please enter names for both players.");
     return;
   }
+  playerInfo.style.display = "none";
 
-  document.querySelector(".player-input").style.display = "none";
-  gameDiv.style.display = "block";
-
-  renderBoard();
-  updateMessage();
+  messageDiv.style.display = "block";
+  messageDiv.innerText = `${player1} , you're up`
+  gameDiv.style.display = "flex"; 
 });
 
-function renderBoard() {
-  boardDiv.innerHTML = "";
-  board = Array(9).fill("");
-  cells = [];
+boxes.forEach((box) =>{
+  box.addEventListener('click',()=>{
+    if(turnX){
+      box.innerText = "x";
+      messageDiv.innerText = `${player2} , you're up`;
+      turnX=false;
+    }
+    else{
+      box.innerText = "o";
+      messageDiv.innerText = `${player1} , you're up`;
+      turnX=true;
+    }
+    box.disabled = true;
 
-  for (let i = 0; i < 9; i++) {
-    const cell = document.createElement("div");
-    cell.classList.add("cell");
-    cell.id = (i + 1).toString(); // For Cypress test
-    cell.addEventListener("click", () => handleMove(i));
-    boardDiv.appendChild(cell);
-    cells.push(cell);
+    checkWinner();
+    
+  })
+});
+
+const checkWinner = () =>{
+  for(let pattern of winPatterns){
+    let pos1 = boxes[pattern[0]].innerText;
+    let pos2 = boxes[pattern[1]].innerText;
+    let pos3 = boxes[pattern[2]].innerText;
+
+    if(pos1 !="" && pos2 !="" && pos3 !=""){
+      if(pos1 === pos2 && pos2 === pos3){
+        const winnerName = pos1 === "x" ? player1 : player2;
+        messageDiv.innerText = `${winnerName}, congratulations you won!`
+        for(box of boxes){
+          box.disabled=true;
+        }
+      }
+    }
   }
-}
-
-function handleMove(index) {
-  if (board[index] !== "") return;
-
-  board[index] = currentPlayer;
-  cells[index].textContent = currentPlayer;
-
-  if (checkWinner()) {
-    const winner = currentPlayer === "x" ? "Player1" : "Player2";
-    updateMessage(`${winner} congratulations you won!`);
-    disableBoard();
-  } else if (board.every(cell => cell !== "")) {
-    updateMessage("It's a draw!");
-  } else {
-    currentPlayer = currentPlayer === "x" ? "o" : "x";
-    updateMessage();
-  }
-}
-
-function updateMessage(msg = "") {
-  if (msg) {
-    messageDiv.textContent = msg;
-  } else {
-    const playerTurn = currentPlayer === "x" ? "Player1" : "Player2";
-    messageDiv.textContent = `${playerTurn}, you're up`;
-  }
-}
-
-function checkWinner() {
-  return winPatterns.some(pattern => {
-    const [a, b, c] = pattern;
-    return board[a] && board[a] === board[b] && board[b] === board[c];
-  });
-}
-
-function disableBoard() {
-  cells.forEach(cell => {
-    cell.style.pointerEvents = "none";
-  });
 }
