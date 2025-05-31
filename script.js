@@ -55,8 +55,8 @@ function handleMove(index) {
   cells[index].textContent = currentPlayer;
 
   if (checkWinner()) {
-    const winner = currentPlayer === "x" ? "player1" : "player2";
-	updateMessage(`${winner} congratulations you won!`);
+    const winner = currentPlayer === "x" ? "Player1" : "Player2";
+    updateMessage(`${winner} congratulations you won!`);
     disableBoard();
   } else if (board.every(cell => cell !== "")) {
     updateMessage("It's a draw!");
@@ -70,8 +70,8 @@ function updateMessage(msg = "") {
   if (msg) {
     messageDiv.textContent = msg;
   } else {
-    const playerLabel = currentPlayer === "x" ? "Player1" : "Player2";
-    messageDiv.textContent = `${playerLabel}, you're up`;
+    const playerTurn = currentPlayer === "x" ? "Player1" : "Player2";
+    messageDiv.textContent = `${playerTurn}, you're up`;
   }
 }
 
