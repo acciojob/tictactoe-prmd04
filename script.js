@@ -70,8 +70,8 @@ function updateMessage(msg = "") {
   if (msg) {
     messageDiv.textContent = msg;
   } else {
-    const name = currentPlayer === "x" ? player1 : player2;
-    messageDiv.textContent = `${name}, you're up`;
+    const playerLabel = currentPlayer === "x" ? "Player1" : "Player2";
+    messageDiv.textContent = `${playerLabel}, you're up`;
   }
 }
 
