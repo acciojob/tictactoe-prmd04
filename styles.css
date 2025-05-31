@@ -1,1 +1,63 @@
 /*  your css code here. If applicable */
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.container {
+  max-width: 400px;
+  width: 100%;
+}
+
+.player-input {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+	
+}
+
+input, button {
+  padding: 10px;
+  font-size: 16px;
+  border-radius:5px;
+  border:none;
+}
+
+button {
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.game {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.message {
+  margin: 20px 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+}
+
+.cell {
+  width: 100px;
+  height: 100px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+}
